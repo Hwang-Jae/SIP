@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스마트 팩토리 이미지 포털 기획안</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fcfcfc; color: #2d3748; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 35vh; max-h: 350px; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border-radius: 0.75rem; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .nav-item.active { background-color: #ebf4ff; color: #3182ce; border-right: 4px solid #3182ce; font-weight: 600; }
+        .tab-btn.active { border-bottom: 2px solid #3182ce; color: #3182ce; font-weight: bold; }
+        .arch-node { transition: all 0.3s ease; }
+        .arch-node:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden">
+
+    <!-- Chosen Palette: Warm Neutrals & Tech Blue (Background: #fcfcfc, Cards: #ffffff, Text: #2d3748, Accent: #3182ce) -->
+    <!-- Application Structure Plan: The SPA is structured as an interactive presentation dashboard. It uses a fixed sidebar navigation for quick access to distinct thematic sections: Overview (Context & Impact), Architecture (Visual system design), Features (Interactive cards), Database (Filterable schema table), and UI Mockups (Tabbed terminal views). This structure transforms a static markdown report into an explorable, executive-level pitch deck, allowing stakeholders to easily navigate from high-level goals down to technical database schemas and UI previews. -->
+    <!-- Visualization & Content Choices: 
+        1. Overview: Uses Chart.js (Bar & Doughnut) to visualize the performance impact and data distribution. Goal: Inform & Compare. Justification: Quickly communicates the 'Why' behind the project. Library: Chart.js.
+        2. Architecture: Uses HTML/CSS Grid with Unicode icons to represent the system flow. Goal: Organize/Relationships. Justification: No SVG allowed; HTML/Tailwind provides a clean, responsive diagram.
+        3. Features: CSS-styled interactive cards. Goal: Inform. Justification: Breaks down dense text into digestible chunks.
+        4. Database: HTML table with Vanilla JS filtering. Goal: Organize/Explore. Justification: Allows technical users to search specific schema fields easily.
+        5. UI Mockups: CSS/HTML Tabs with <pre> blocks. Goal: Inform. Justification: Preserves the ASCII mockup art from the report while providing a clean switching mechanism.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="w-full md:w-64 bg-white border-r border-gray-200 flex-shrink-0 z-10 md:h-full overflow-y-auto flex flex-col shadow-sm">
+        <div class="p-6 border-b border-gray-100">
+            <h1 class="text-xl font-bold text-gray-800 leading-tight">🏭 스마트 팩토리<br><span class="text-blue-600 text-lg">이미지 포털 기획</span></h1>
+        </div>
+        <div class="flex flex-row md:flex-col p-2 overflow-x-auto md:overflow-hidden flex-1">
+            <button onclick="nav('overview')" id="nav-overview" class="nav-item active text-left px-4 py-3 rounded-md mb-1 text-sm text-gray-600 whitespace-nowrap transition-colors">📊 프로젝트 개요</button>
+            <button onclick="nav('architecture')" id="nav-architecture" class="nav-item text-left px-4 py-3 rounded-md mb-1 text-sm text-gray-600 whitespace-nowrap transition-colors">⚙️ 시스템 아키텍처</button>
+            <button onclick="nav('features')" id="nav-features" class="nav-item text-left px-4 py-3 rounded-md mb-1 text-sm text-gray-600 whitespace-nowrap transition-colors">✨ 주요 기능 명세</button>
+            <button onclick="nav('schema')" id="nav-schema" class="nav-item text-left px-4 py-3 rounded-md mb-1 text-sm text-gray-600 whitespace-nowrap transition-colors">🗄️ 데이터베이스 설계</button>
+            <button onclick="nav('mockups')" id="nav-mockups" class="nav-item text-left px-4 py-3 rounded-md mb-1 text-sm text-gray-600 whitespace-nowrap transition-colors">💻 UI/UX 시안</button>
+        </div>
+        <div class="p-4 text-xs text-gray-400 border-t border-gray-100 mt-auto hidden md:block">
+            ClickHouse & Ollama 기반<br>지능형 RAG 포털 구축안
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-[#fcfcfc] scroll-smooth" id="main-content">
+        
+        <section id="overview" class="mb-16 min-h-[80vh]">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">📊 프로젝트 개요 및 기대 효과</h2>
+                <p class="text-gray-600">스마트 팩토리 내 폭증하는 비정형 미디어 데이터를 효율적으로 관리하고 지능적으로 탐색하기 위한 차세대 하이브리드 포털 구축안입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">💡 추진 배경 및 목표</h3>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-start"><span class="mr-2">⚠️</span> <span><strong>데이터 급증:</strong> 도면, 공장 전경, Vision 센서 등 비정형 데이터 폭증.</span></li>
+                        <li class="flex items-start"><span class="mr-2">🐢</span> <span><strong>성능 한계:</strong> 기존 RDBMS 직접 저장 시 I/O 병목 및 쿼리 저하 발생.</span></li>
+                        <li class="flex items-start"><span class="mr-2">🔍</span> <span><strong>검색 한계:</strong> 단순 텍스트 일치 기반으로 자연어 시맨틱 탐색 불가.</span></li>
+                        <li class="flex items-start mt-4 pt-4 border-t border-gray-100"><span class="mr-2">🚀</span> <span><strong>해결책 1: 하이브리드 구조:</strong> 파일은 로컬/S3, 메타데이터는 ClickHouse 분리.</span></li>
+                        <li class="flex items-start"><span class="mr-2">🤖</span> <span><strong>해결책 2: 로컬 AI RAG:</strong> Ollama를 활용한 오프라인 지능형 검색 챗봇 연동.</span></li>
+                    </ul>
+                </div>
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">📈 성능 개선 기대치 (예측)</h3>
+                    <div class="chart-container">
+                        <canvas id="perfChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-2">대용량 이미지 쿼리 응답 속도 비교 (Blob vs Hybrid)</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">📁 관리 대상 데이터 분포</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="chart-container h-48">
+                        <canvas id="distChart"></canvas>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 mb-2">시스템에 적재될 주요 데이터의 특성 및 비중입니다.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex justify-between items-center bg-blue-50 px-3 py-2 rounded text-blue-800"><span>📐 도면 (Blueprint)</span> <span>설비/배관 CAD 등</span></li>
+                            <li class="flex justify-between items-center bg-yellow-50 px-3 py-2 rounded text-yellow-800"><span>🏭 공장 전경 (Factory)</span> <span>CCTV, 레이아웃 등</span></li>
+                            <li class="flex justify-between items-center bg-emerald-50 px-3 py-2 rounded text-emerald-800"><span>👁️ Vision 데이터</span> <span>양불 판정 센서 (OK/NG)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="mb-16 min-h-[80vh] pt-8 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">⚙️ 시스템 아키텍처</h2>
+                <p class="text-gray-600">외부 인터넷 연결이 제한된 폐쇄망에서도 완벽하게 작동하는 로컬 지향 패키징 구조입니다.</p>
+            </div>
+
+            <div class="glass-card p-8 bg-gray-50">
+                <div class="flex flex-col items-center space-y-6 w-full max-w-4xl mx-auto">
+                    
+                    <div class="arch-node w-full md:w-2/3 bg-white border-2 border-blue-200 rounded-xl p-4 text-center shadow-sm">
+                        <h4 class="font-bold text-blue-800 text-lg">🌐 Client Web</h4>
+                        <p class="text-xs text-gray-500">Bootstrap 5 Responsive UI</p>
+                    </div>
+
+                    <div class="text-gray-400 font-bold">⬇️ HTTP Request / REST / AJAX</div>
+
+                    <div class="arch-node w-full md:w-3/4 bg-blue-600 border-2 border-blue-700 rounded-xl p-4 text-center shadow-md text-white">
+                        <h4 class="font-bold text-lg">🐍 Python Flask</h4>
+                        <p class="text-xs text-blue-100">Core Application Controller</p>
+                    </div>
+
+                    <div class="flex justify-between w-full md:w-3/4 px-12">
+                        <div class="text-gray-400 font-bold">↙️</div>
+                        <div class="text-gray-400 font-bold">⬇️</div>
+                        <div class="text-gray-400 font-bold">↘️</div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                        <div class="arch-node bg-white border-2 border-gray-200 rounded-xl p-4 text-center shadow-sm flex flex-col h-full">
+                            <h4 class="font-bold text-gray-800">📁 Local Directory</h4>
+                            <p class="text-xs text-gray-500 mb-2">static/uploads</p>
+                            <div class="mt-auto text-xs text-left bg-gray-50 p-2 rounded text-gray-600">
+                                - Raw Image File<br>- UUID Mapping<br>- Web Serving
+                            </div>
+                        </div>
+
+                        <div class="arch-node bg-white border-2 border-orange-200 rounded-xl p-4 text-center shadow-sm flex flex-col h-full">
+                            <h4 class="font-bold text-orange-700">📊 ClickHouse DB</h4>
+                            <p class="text-xs text-orange-500 mb-2">Columnar OLAP</p>
+                            <div class="mt-auto text-xs text-left bg-orange-50 p-2 rounded text-orange-800">
+                                - ID, Serial Code<br>- Title, Desc<br>- URL, Category
+                            </div>
+                        </div>
+
+                        <div class="arch-node bg-white border-2 border-emerald-200 rounded-xl p-4 text-center shadow-sm flex flex-col h-full">
+                            <h4 class="font-bold text-emerald-700">🤖 Ollama Engine</h4>
+                            <p class="text-xs text-emerald-500 mb-2">Local LLM (gpt-oss:20b)</p>
+                            <div class="mt-auto text-xs text-left bg-emerald-50 p-2 rounded text-emerald-800">
+                                - Natural Query<br>- JSON Extract<br>- RAG Synthesis
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="mb-16 min-h-[80vh] pt-8 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">✨ 주요 기능 명세</h2>
+                <p class="text-gray-600">사용자 편의성과 관리 효율성을 극대화하기 위한 4대 핵심 기능을 제공합니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="glass-card p-6 border-l-4 border-l-blue-500 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">🗂️</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">분류별 데이터 브라우징</h3>
+                    <p class="text-sm text-gray-600 mb-4">직관적인 탭 UI를 통해 3대 핵심 미디어를 빠르게 탐색합니다.</p>
+                    <ul class="text-xs text-gray-500 space-y-1 bg-gray-50 p-3 rounded">
+                        <li><strong>📐 도면:</strong> 캐드 도면, 설비 배치도, 소방 배관도 등</li>
+                        <li><strong>🏭 전경:</strong> 실시간 CCTV 캡처, 가동 장비 외경 등</li>
+                        <li><strong>👁️ Vision:</strong> 판정용 센서 미디어 (OK/NG 데이터)</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card p-6 border-l-4 border-l-indigo-500 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">🔢</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">스마트 채번 자동화</h3>
+                    <p class="text-sm text-gray-600 mb-4">규격화된 코드를 자동 생성하여 데이터 추적성을 확보합니다.</p>
+                    <ul class="text-xs text-gray-500 space-y-1 bg-gray-50 p-3 rounded">
+                        <li><strong>일괄 업로드:</strong> 여러 이미지를 동시 적재 지원</li>
+                        <li><strong>동적 폼:</strong> 각 장별 상세 메모 및 제목 개별 기입</li>
+                        <li><strong>자동 채번:</strong> <code class="bg-indigo-100 text-indigo-800 px-1 rounded">FAC-YYYYMMDD-XXXX</code> 규칙 적용 동기화</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card p-6 border-l-4 border-l-red-500 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">🗑️</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">대량 일괄 관리 (Bulk Admin)</h3>
+                    <p class="text-sm text-gray-600 mb-4">오탐지 파일이나 폐기된 도면을 안전하고 빠르게 일괄 정리합니다.</p>
+                    <ul class="text-xs text-gray-500 space-y-1 bg-gray-50 p-3 rounded">
+                        <li><strong>다중 선택:</strong> 체크박스를 통한 대량 목록 선택</li>
+                        <li><strong>하이브리드 파기:</strong> DB 인덱스와 로컬 파일을 동시 영구 삭제</li>
+                        <li><strong>고속 처리:</strong> ClickHouse <code>ALTER TABLE ... DELETE</code> 기반</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card p-6 border-l-4 border-l-emerald-500 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-3">🤖</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Ollama RAG 증강 검색</h3>
+                    <p class="text-sm text-gray-600 mb-4">자연어 질의를 이해하고 결과를 브리핑하는 지능형 챗봇입니다.</p>
+                    <ul class="text-xs text-gray-500 space-y-1 bg-gray-50 p-3 rounded">
+                        <li><strong>인텐트 파싱:</strong> "NG 비전 데이터만 보여줘" 구어체 인식</li>
+                        <li><strong>JSON 추출:</strong> 로컬 LLM이 검색 조건 및 키워드 완벽 파싱</li>
+                        <li><strong>RAG 임베딩:</strong> 검색 결과를 바탕으로 한국어 요약 브리핑 생성</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="schema" class="mb-16 min-h-[80vh] pt-8 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">🗄️ 데이터베이스 설계 (ClickHouse)</h2>
+                <p class="text-gray-600">초고속 집계와 검색 최적화를 위한 <code>image_data</code> MergeTree 스키마 정의입니다.</p>
+            </div>
+
+            <div class="glass-card p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">테이블 명세</h3>
+                    <input type="text" id="schemaSearch" placeholder="컬럼명 또는 설명 검색..." class="px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-blue-500 w-64" onkeyup="filterSchema()">
+                </div>
+                
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="min-w-full text-sm text-left text-gray-600" id="schemaTable">
+                        <thead class="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
+                            <tr>
+                                <th scope="col" class="px-4 py-3">컬럼명</th>
+                                <th scope="col" class="px-4 py-3">데이터 타입</th>
+                                <th scope="col" class="px-4 py-3">설명</th>
+                                <th scope="col" class="px-4 py-3">인덱스 / 비고</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schemaBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 bg-blue-50 text-blue-800 text-xs p-3 rounded-md flex items-start">
+                    <span class="mr-2">💡</span>
+                    <span>정렬 키: 업로드 날짜 기준 고속 정렬 및 기간 탐색 효율 극대화를 위해 <code>ORDER BY uploaded_at</code>이 적용되어 있습니다.</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="mockups" class="mb-16 min-h-[80vh] pt-8 hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">💻 UI/UX 시안</h2>
+                <p class="text-gray-600">사용자 화면, 챗봇 인터페이스, 관리자 대시보드의 초기 레이아웃 기획안입니다.</p>
+            </div>
+
+            <div class="glass-card overflow-hidden">
+                <div class="flex border-b border-gray-200 bg-gray-50 overflow-x-auto">
+                    <button onclick="switchTab('main-ui')" id="tab-main-ui" class="tab-btn active px-6 py-3 text-sm text-gray-600 hover:bg-white transition-colors whitespace-nowrap">메인 탐색기</button>
+                    <button onclick="switchTab('chat-ui')" id="tab-chat-ui" class="tab-btn px-6 py-3 text-sm text-gray-600 hover:bg-white transition-colors whitespace-nowrap">AI 챗봇 화면</button>
+                    <button onclick="switchTab('admin-ui')" id="tab-admin-ui" class="tab-btn px-6 py-3 text-sm text-gray-600 hover:bg-white transition-colors whitespace-nowrap">관리자 대시보드</button>
+                </div>
+
+                <div class="p-0 bg-gray-900 overflow-x-auto">
+                    <pre id="content-main-ui" class="text-green-400 p-6 text-xs sm:text-sm font-mono leading-relaxed mockup-content">
+===================================================================================
+ [🏭 스마트 팩토리 포털]                                            [관리자 로그인] 
+===================================================================================
+ 스마트 이미지 데이터 조회 및 AI 분석
+ 
+  +-------------------------------------+-------------------------------------+
+  |          📁 데이터 탐색기           |        🤖 AI 증강 검색 챗봇         |
+  +-------------------------------------+-------------------------------------+
+  
+  [ 🔍 검색어 통합 검색: [ 러시아 공장 전경          ] [조회 시작일] [조회 종료일]  ]
+  [ ⇅ 정렬 기준: [ 최신 등록순 v ]                                 [조회] [🔄]  ]
+  
+  +---------------------------------------------------------------------------+
+  |  📐 도면 (0)    |  🏭 공장 전경 (1)  |  👁️ Vision 데이터 (0)                       |
+  +---------------------------------------------------------------------------+
+  |                                                                           |
+  |  +---------------------------+                                            |
+  |  | FAC-20260610-0013         |                                            |
+  |  | +-----------------------+ |                                            |
+  |  | |                       | |                                            |
+  |  | |       [ 이미지 ]      | |                                            |
+  |  | |                       | |                                            |
+  |  | +-----------------------+ |                                            |
+  |  | **러시아 공장 전경 13** |                                            |
+  |  | 설비 시동 전 외부 모습... |                                            |
+  |  | 2026-06-10 16:53:10       |                                            |
+  |  +---------------------------+                                            |
+  |                                                                           |
+  +---------------------------------------------------------------------------+
+  
+  🔍 선택 이미지 상세 메타데이터 (카드 클릭 시 상세 확장 노출 영역)
+  +---------------------------------------------------------------------------+
+  |  +------------------------+  ■ 이미지 제목 : 러시아 공장 전경 13           |
+  |  |                        |  ■ 관리 번호   : FAC-20260610-0013            |
+  |  |      [ 고해상도 ]      |  ■ 카테고리   : 공장 전경                     |
+  |  |      [ 이미지 ]        |  ■ 업로드 일시 : 2026-06-10 16:53:10           |
+  |  |                        |  ■ 상세 내용   : 러시아 모스크바 근교 제2     |
+  |  +------------------------+                  공장 주동 건물 전경 사진.    |
+  +---------------------------------------------------------------------------+</pre>
+
+                    <pre id="content-chat-ui" class="text-green-400 p-6 text-xs sm:text-sm font-mono leading-relaxed mockup-content hidden">
+  +-------------------------------------+-------------------------------------+
+  |            데이터 탐색기            |       🤖 AI 증강 검색 챗봇 [Active]  |
+  +-------------------------------------+-------------------------------------+
+  
+  +---------------------------------------------+ +---------------------------+
+  | 🤖 Ollama AI 공장 스마트 어시스턴트         | | 🔍 선택 이미지 상세 정보  |
+  |---------------------------------------------| |---------------------------|
+  | (BOT) 안녕하세요! 이미지 AI 비서입니다. 😊   | |  +---------------------+  |
+  |       무엇을 찾아드릴까요?                  | |  |                     |  |
+  |                                             | |  |      [이미지]       |  |
+  | (USER) 러시아 공장 전경 이미지 찾아줘       | |  |                     |  |
+  |                                             | |  +---------------------+  |
+  | (BOT) 분석 결과 '공장 전경' 분류에서         | | ■ 러시아 공장 전경 13     |
+  |       '러시아'가 입력된 사진 1건이          | | ■ FAC-20260610-0013       |
+  |       식별되었습니다. 해당 시설은 모스크바  | | ■ 분류: 공장 전경         |
+  |       지사 주동 전경입니다.                 | | ■ 일시: 2026-06-10 16:53  |
+  |                                             | | ■ 설명:                   |
+  |       📍 찾은 스마트 팩토리 이미지:         | | 모스크바 근교 제2 공장    |
+  |       +-------+                             | | 주동 전경 사진입니다.     |
+  |       | [img] | (클릭 시 우측 상세 패널 연동)| |                           |
+  |       +-------+                             | |                           |
+  |                                             | |                           |
+  |---------------------------------------------| |                           |
+  | [ 러시아 공장 전경 이미지 찾아줘        ] [전송] | |                           |
+  +---------------------------------------------+ +---------------------------+</pre>
+
+                    <pre id="content-admin-ui" class="text-green-400 p-6 text-xs sm:text-sm font-mono leading-relaxed mockup-content hidden">
+===================================================================================
+ [🏭 스마트 팩토리 포털] [관리자 모드]                      [관리자 페이지] [로그아웃]
+===================================================================================
+ 스마트 이미지 관리자 패널
+ 
+  [ 🗑️ 선택 이미지 일괄 삭제 (2) ] (선택 체크박스 수량만큼 다중 카운트 자동 연동)
+  
+  +--------------------------------------+ +----------------------------------+
+  | 💾 다중 이미지 일괄 업로드            | | 등록된 이미지 데이터 관리 리스트   |
+  |--------------------------------------| |----------------------------------|
+  | ■ 카테고리 : [ 도면 v ]               | | [x] 이미지  관리번호  분류  제목 |
+  | ■ 파일 선택: [ 파일선택 (3개) ]      | | -------------------------------- |
+  |                                      | | [v] [img]   FAC-0013  전경  러시.. |
+  | [파일 #1: blueprint_floor1.dwg]      | | [v] [img]   FAC-0012  전경  설비.. |
+  |  - 제목: [ 1공장 1층 배치도       ]   | | [ ] [img]   FAC-0011  비전  OK_0.. |
+  |  - 설명: [ 라인 기계 장비 위치도  ]   | |                                |
+  |                                      | |                                |
+  | [파일 #2: blueprint_boiler.dwg]      | |                                |
+  |  - 제목: [ 보일러실 배관 계통도   ]   | |                                |
+  |  - 설명: [ 메인 고압 밸브 인프라  ]   | |                                |
+  |                                      | |                                |
+  | [ 🏭 일괄 업로드 및 자동 채번 실행 ]  | |                                |
+  +--------------------------------------+ +----------------------------------+</pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const state = {
+            currentSection: 'overview',
+            schemaData: [
+                { col: 'id', type: 'UUID', desc: '고유 키 식별값', index: '기본값 생성 (generateUUIDv4())' },
+                { col: 'category', type: 'String', desc: '이미지 대분류 (blueprint, factory, vision)', index: '정렬 및 파티셔닝 키 적용 가능' },
+                { col: 'title', type: 'String', desc: '사용자가 지정한 도면/전경 등의 이미지 제목', index: 'ILIKE 매칭 최적화' },
+                { col: 'description', type: 'String', desc: '설비 스펙, 촬영 공간, 검사 메모 등의 상세 설명', index: 'ILIKE 매칭 최적화' },
+                { col: 'serial_code', type: 'String', desc: '스마트팩토리 전용 관리 코드 (FAC-YYYYMMDD-XXXX)', index: '고유 번호 식별용' },
+                { col: 'filename', type: 'String', desc: '파일 시스템 저장용 난독화 고유 명칭 (UUID 포함)', index: '중복 방지 파일명' },
+                { col: 'file_url', type: 'String', desc: '정적 웹 호스팅 경로 주소 (/static/uploads/파일명.ext)', index: '웹 브라우저 렌더링 목적' },
+                { col: 'uploaded_at', type: 'DateTime', desc: '데이터 적재 완료 시간', index: '정렬 기준 (ORDER BY)' }
+            ]
+        };
+
+        function nav(targetId) {
+            document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(targetId).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('nav-' + targetId).classList.add('active');
+            
+            state.currentSection = targetId;
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            document.querySelectorAll('.mockup-content').forEach(content => content.classList.add('hidden'));
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+        }
+
+        function renderSchema(data) {
+            const tbody = document.getElementById('schemaBody');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-gray-100 hover:bg-gray-50';
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-mono font-bold text-blue-700">${row.col}</td>
+                    <td class="px-4 py-3"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">${row.type}</span></td>
+                    <td class="px-4 py-3">${row.desc}</td>
+                    <td class="px-4 py-3 text-xs text-gray-500">${row.index}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterSchema() {
+            const query = document.getElementById('schemaSearch').value.toLowerCase();
+            const filtered = state.schemaData.filter(row => 
+                row.col.toLowerCase().includes(query) || 
+                row.desc.toLowerCase().includes(query)
+            );
+            renderSchema(filtered);
+        }
+
+        function initCharts() {
+            const ctxPerf = document.getElementById('perfChart').getContext('2d');
+            new Chart(ctxPerf, {
+                type: 'bar',
+                data: {
+                    labels: ['RDBMS Blob (직접저장)', 'ClickHouse Hybrid (제안)'],
+                    datasets: [{
+                        label: '평균 쿼리 응답 시간 (ms)',
+                        data: [4500, 150], 
+                        backgroundColor: ['rgba(239, 68, 68, 0.7)', 'rgba(59, 130, 246, 0.8)'],
+                        borderColor: ['rgb(239, 68, 68)', 'rgb(59, 130, 246)'],
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: '밀리초 (ms) - 낮을수록 좋음' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            const ctxDist = document.getElementById('distChart').getContext('2d');
+            new Chart(ctxDist, {
+                type: 'doughnut',
+                data: {
+                    labels: ['도면 (Blueprint)', '공장 전경 (Factory)', 'Vision 데이터'],
+                    datasets: [{
+                        data: [15, 25, 60],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)', 
+                            'rgba(234, 179, 8, 0.8)',  
+                            'rgba(16, 185, 129, 0.8)'  
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        window.onload = () => {
+            renderSchema(state.schemaData);
+            initCharts();
+        };
+    </script>
+</body>
+</html>
